@@ -6,9 +6,11 @@ from .models import User, Leave
 import json
 
 
-#Login function for employee
 @csrf_exempt
 def login(request):
+    """
+    Login function for the user(employee, admin). It checks if the user exists in the database and if the password is correct. 
+    """
     if request.method == "GET":
         if  'user' in request.session:
             return JsonResponse({"error": "Already logedin."})
@@ -39,6 +41,9 @@ def login(request):
 
 @csrf_exempt
 def logout(request):
+    """"
+    Logout function for the user(employee, admin). It removes the user from the session.
+    """
     try:
         del request.session['user']
         del request.session['user_type']
@@ -47,9 +52,11 @@ def logout(request):
         pass
     return JsonResponse({"message": "No login session found."})
 
-#Api call to create leave request from the employee
 @csrf_exempt
 def createLeave(request):
+    """
+    Create leave request function for the employee. It checks if the user is logged in and if the leave request is valid.
+    """
     if request.method == "POST":
         if 'user' not in request.session:
             return JsonResponse({"error": "Please login first."})
@@ -96,9 +103,11 @@ def createLeave(request):
     else:
         return JsonResponse({"error": "400", "message": "Bad Request"})
 
-#Api call to show all leave requests to the admin
 @csrf_exempt
 def showLeaveRequests(request):
+    """
+    Show all leave requests function for the admin. It checks if the user is logged in and if the user is admin.
+    """
     if request.method == "GET":
         if 'user' not in request.session:
             return JsonResponse({"error": "Please login first."})
@@ -132,9 +141,11 @@ def showLeaveRequests(request):
     else:
         return JsonResponse({"error": "400", "message": "Bad Request"})
 
-#Api call to approve leave request by admin
 @csrf_exempt
 def approveLeave(request):
+    """
+    Approve leave request function for the admin. It checks if the user is logged in and if the user is admin.
+    """
     if request.method == "POST":
         if 'user' not in request.session:
             return JsonResponse({"error": "Please login first."})
@@ -172,9 +183,11 @@ def approveLeave(request):
     else:
         return JsonResponse({"error": "400", "message": "Bad Request"})
 
-# Api call to reject leave request by admin
 @csrf_exempt
 def rejectLeave(request):
+    """
+    Reject leave request function for the admin. It checks if the user is logged in and if the user is admin.
+    """
     if request.method == "POST":
         if 'user' not in request.session:
             return JsonResponse({"error": "Please login first."})
@@ -212,9 +225,11 @@ def rejectLeave(request):
     else:
         return JsonResponse({"error": "400", "message": "Bad Request"})
 
-#Api call to show all leave requests to the employee
 @csrf_exempt
 def showEmployeeLeaveRequests(request):
+    """
+    Show all leave requests function for the employee. It checks if the user is logged in and if the user is employee.
+    """
     if request.method == "GET":
         if 'user' not in request.session:
             return JsonResponse({"error": "Please login first."})
